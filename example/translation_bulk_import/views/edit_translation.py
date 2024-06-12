@@ -2,6 +2,8 @@ import polib
 
 from django.contrib import messages
 from django.views.decorators.http import require_POST
+from django.views.generic import TemplateView
+
 from django.utils.translation import gettext as _
 
 from wagtail_localize.models import Translation
@@ -25,3 +27,8 @@ def bulk_upload_pofile(request):
             messages.error(request, _("Please upload a valid PO file."))
         except Translation.DoesNotExist:
             messages.error(request, _("Please upload a valid PO file."))
+
+
+class BulkUploadView(TemplateView):
+    template_name = "translation_bulk_import/admin/bulk_upload.html"
+    title = "Upload many PO files"

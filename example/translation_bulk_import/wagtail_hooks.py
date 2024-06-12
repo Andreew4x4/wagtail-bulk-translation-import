@@ -15,6 +15,11 @@ def register_admin_urls():
             edit_translation.bulk_upload_pofile,
             name="bulk_upload_pofile",
         ),
+        path(
+            "translate/upload_bulk_files/",
+            edit_translation.BulkUploadView.as_view(),
+            name="bulk_upload_files",
+        ),
     ]
 
     return [
@@ -30,7 +35,7 @@ def register_admin_urls():
 
 def page_listing_more_buttons(page: Page, user, view_name=None, next_url=None):
     url = reverse(
-        "bulk_translation_import:bulk_upload_pofile",
+        "bulk_translation_import:bulk_upload_files",
     )
     yield ListingButton(
         "Upload many PO files",

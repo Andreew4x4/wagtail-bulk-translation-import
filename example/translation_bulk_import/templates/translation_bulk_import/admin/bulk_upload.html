@@ -1,0 +1,15 @@
+{% extends "wagtailadmin/base.html" %}
+{% load i18n wagtailadmin_tags %}
+{% block titletag %}{{ view.get_title }} {{ view.get_subtitle }}{% endblock %}
+
+{% block content %}
+{% include "wagtailadmin/shared/header.html" with title=view.get_title subtitle=view.get_subtitle icon="doc-empty-inverse" %}
+
+<div class="nice-padding">
+    <form method="POST" action="{% url 'bulk_translation_import:bulk_upload_pofile' %}">
+        <input type="file" name="" multiple="multiple" accept=".po">
+        <input style="margin: 50px 0 0" class="button button-secondary" type="submit" value="Upload files" />
+    </form>
+</div>
+
+{% endblock %}
