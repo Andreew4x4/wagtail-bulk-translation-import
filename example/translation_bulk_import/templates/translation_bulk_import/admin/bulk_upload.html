@@ -7,7 +7,7 @@
 
 <div class="nice-padding">
 
-    <form method="POST" action="{% url 'bulk_translation_import:bulk_upload_pofile' %}">
+    <form method="POST" enctype="multipart/form-data" action="{% url 'bulk_translation_import:bulk_upload_pofile' %}">
         {% csrf_token %}
         <input type="file" name="file" multiple="multiple" accept=".po">
         <input style="margin: 50px 0 0" class="button button-secondary" type="submit" value="Upload files"/>
