@@ -11,7 +11,7 @@ def register_admin_urls():
         path(
             "translate/pofile/bulk_upload/",
             edit_translation.bulk_upload_pofile,
-            name="upload_pofile",
+            name="bulk_upload_pofile",
         ),
     ]
 
