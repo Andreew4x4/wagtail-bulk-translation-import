@@ -22,3 +22,4 @@
 .ruff_cache
 
 example/db.sqlite3
+example/static/*
