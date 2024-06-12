@@ -1,6 +1,8 @@
-from django.urls import include, path
+from django.urls import include, path, reverse
 
 from wagtail import hooks
+from wagtail.models import Locale, Page
+from wagtail.admin.widgets import ListingButton
 
 from .views import edit_translation
 
@@ -20,7 +22,23 @@ def register_admin_urls():
             "localize/",
             include(
                 (urls, "wagtail_localize"),
-                namespace="wagtail_localize",
+                namespace="bulk_translation_import",
             ),
         )
     ]
+
+
+def page_listing_more_buttons(page: Page, user, view_name=None, next_url=None):
+    url = reverse(
+        "bulk_translation_import:bulk_upload_pofile",
+    )
+    yield ListingButton(
+        "Upload many PO files",
+        url,
+        priority=60,
+        icon_name="wagtail-localize-language",
+    )
+
+
+hooks.register("register_page_header_buttons", page_listing_more_buttons)
+hooks.register("register_page_listing_more_buttons", page_listing_more_buttons)
