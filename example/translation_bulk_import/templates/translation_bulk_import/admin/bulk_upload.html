@@ -6,9 +6,11 @@
 {% include "wagtailadmin/shared/header.html" with title=view.get_title subtitle=view.get_subtitle icon="doc-empty-inverse" %}
 
 <div class="nice-padding">
+
     <form method="POST" action="{% url 'bulk_translation_import:bulk_upload_pofile' %}">
+        {% csrf_token %}
         <input type="file" name="" multiple="multiple" accept=".po">
-        <input style="margin: 50px 0 0" class="button button-secondary" type="submit" value="Upload files" />
+        <input style="margin: 50px 0 0" class="button button-secondary" type="submit" value="Upload files"/>
     </form>
 </div>
 
