@@ -45,7 +45,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "translation_bulk_import"
+    # Translations
+    "wagtail_localize",
+    "wagtail_localize.locales",  # This replaces "wagtail.locales"
+    "translation_bulk_import",
 ]
 
 MIDDLEWARE = [
@@ -121,6 +124,8 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
 
@@ -160,6 +165,8 @@ STORAGES = {
 
 # Wagtail settings
 
+WAGTAIL_I18N_ENABLED = True
+
 WAGTAIL_SITE_NAME = "example"
 
 # Search
@@ -189,4 +196,10 @@ WAGTAILDOCS_EXTENSIONS = [
     "txt",
     "xlsx",
     "zip",
+]
+
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
+    ('en', "English"),
+    ('pl', "Polish"),
+    ('nl', "Dutch"),
 ]
