@@ -1,0 +1,1 @@
+# wagtail-bulk-translation-import
