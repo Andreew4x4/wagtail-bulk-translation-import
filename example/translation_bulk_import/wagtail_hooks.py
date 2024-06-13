@@ -1,4 +1,6 @@
 from django.urls import include, path, reverse
+from django.utils.translation import gettext as _
+
 from urllib.parse import urlencode
 
 from wagtail import hooks
@@ -44,10 +46,10 @@ def page_listing_upload_po_button(page: Page, user, view_name=None, next_url=Non
         "bulk_translation_import:bulk_upload_files",
     )
     yield ListingButton(
-        "Upload many PO files",
+        _("Upload many .PO files"),
         url,
-        priority=60,
-        icon_name="wagtail-localize-language",
+        priority=90,
+        icon_name="upload",
     )
 
 
@@ -64,10 +66,10 @@ def page_listing_download_po_button(page: Page, user, view_name=None, next_url=N
         if next_url is not None:
             url += "?" + urlencode({"next": next_url})
         yield ListingButton(
-            "Dwonload PO files for site",
+            _("Download .PO files for this site"),
             url,
-            priority=60,
-            icon_name="wagtail-localize-language",
+            priority=91,
+            icon_name="download",
         )
 
 hooks.register("register_page_header_buttons", page_listing_download_po_button)
