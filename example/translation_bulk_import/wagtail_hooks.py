@@ -1,4 +1,5 @@
 from django.urls import include, path, reverse
+from urllib.parse import urlencode
 
 from wagtail import hooks
 from wagtail.models import Locale, Page
@@ -20,6 +21,11 @@ def register_admin_urls():
             edit_translation.BulkUploadView.as_view(),
             name="bulk_upload_files",
         ),
+        path(
+            "translate/download_bulk_files/<int:page_id>",
+            edit_translation.BulkDownloadView.as_view(),
+            name="bulk_download_files",
+        ),
     ]
 
     return [
@@ -33,10 +39,13 @@ def register_admin_urls():
     ]
 
 
-def page_listing_more_buttons(page: Page, user, view_name=None, next_url=None):
+def page_listing_upload_po_button(page: Page, user, view_name=None, next_url=None):
     url = reverse(
         "bulk_translation_import:bulk_upload_files",
+        args=[page.alias_of_id or page.id],
     )
+    if next_url is not None:
+        url += "?" + urlencode({"next": next_url})
     yield ListingButton(
         "Upload many PO files",
         url,
@@ -45,5 +54,23 @@ def page_listing_more_buttons(page: Page, user, view_name=None, next_url=None):
     )
 
 
-hooks.register("register_page_header_buttons", page_listing_more_buttons)
-hooks.register("register_page_listing_more_buttons", page_listing_more_buttons)
+hooks.register("register_page_header_buttons", page_listing_upload_po_button)
+hooks.register("register_page_listing_more_buttons", page_listing_upload_po_button)
+
+
+def page_listing_download_po_button(page: Page, user, view_name=None, next_url=None):
+    url = reverse(
+        "bulk_translation_import:bulk_download_files",
+        args=[page.alias_of_id or page.id],
+    )
+    if next_url is not None:
+        url += "?" + urlencode({"next": next_url})
+    yield ListingButton(
+        "Dwonload PO files for site",
+        url,
+        priority=60,
+        icon_name="wagtail-localize-language",
+    )
+
+hooks.register("register_page_header_buttons", page_listing_download_po_button)
+hooks.register("register_page_listing_more_buttons", page_listing_download_po_button)
