@@ -1,17 +1,31 @@
 {% extends "wagtailadmin/base.html" %}
 {% load i18n wagtailadmin_tags %}
-{% block titletag %}{{ view.get_title }} {{ view.get_subtitle }}{% endblock %}
+{% block titletag %}
+{% translate "Upload *.po files" as the_title %}
+{{ the_title }}
+{% endblock %}
 
 {% block content %}
-{% include "wagtailadmin/shared/header.html" with title=view.get_title subtitle=view.get_subtitle icon="doc-empty-inverse" %}
+{% translate "Upload *.po files" as title %}
+{% translate "Translation bulk upload" as sub_title %}
+{% include "wagtailadmin/shared/header.html" with title="" subtitle=sub_title icon="upload" %}
 
 <div class="nice-padding">
 
-    <form method="POST" enctype="multipart/form-data" action="{% url 'bulk_translation_import:bulk_upload_pofile' %}">
-        {% csrf_token %}
-        <input type="file" name="file" multiple="multiple" accept=".po">
-        <input style="margin: 50px 0 0" class="button button-secondary" type="submit" value="Upload files"/>
-    </form>
+    <div class="w-flex">
+        <div class="w-flex-col">
+            <div>
+                <h1>{% translate "Select .po files with translations" %}</h1>
+            </div>
+            <form method="POST" enctype="multipart/form-data"
+                  action="{% url 'bulk_translation_import:bulk_upload_pofile' %}">
+                {% csrf_token %}
+                <input type="file" name="file" multiple="multiple" accept=".po">
+                <input style="margin: 50px 0 0" class="button button-secondary" type="submit" value="Upload files"/>
+            </form>
+        </div>
+    </div>
+
 
 </div>
 
