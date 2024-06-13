@@ -12,10 +12,6 @@
         <input type="file" name="file" multiple="multiple" accept=".po">
         <input style="margin: 50px 0 0" class="button button-secondary" type="submit" value="Upload files"/>
     </form>
-
-    <a class="button button-secondary" href="{% url 'bulk_translation_import:bulk_download_files' %}">
-        Download all PO Files
-    </a>
 </div>
 
 {% endblock %}
