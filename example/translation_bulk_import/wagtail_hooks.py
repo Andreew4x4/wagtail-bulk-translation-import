@@ -8,8 +8,9 @@ from wagtail.models import Locale, Page
 from wagtail.admin.widgets import ListingButton
 from wagtail.admin.menu import MenuItem
 
-from .views import edit_translation
 
+from .views import edit_translation
+from .models import TranslationMenuItem
 
 @hooks.register("register_admin_urls")
 def register_admin_urls():
@@ -53,7 +54,7 @@ def menu_item_upload_po_button():
     url = reverse(
         "bulk_translation_import:bulk_upload_files",
     )
-    return MenuItem(
+    return TranslationMenuItem(
         _("Upload translations"),
         url,
         order=9999,
@@ -66,7 +67,7 @@ def menu_item_download_po_button():
     url = reverse(
         "bulk_translation_import:bulk_download_all_files",
     )
-    return MenuItem(
+    return TranslationMenuItem(
         _("Download translations"),
         url,
         order=9999,
