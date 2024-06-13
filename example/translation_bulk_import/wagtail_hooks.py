@@ -4,9 +4,8 @@ from django.utils.translation import gettext as _
 from urllib.parse import urlencode
 
 from wagtail import hooks
-from wagtail.models import Locale, Page
+from wagtail.models import Page
 from wagtail.admin.widgets import ListingButton
-from wagtail.admin.menu import MenuItem
 
 
 from .views import edit_translation
@@ -16,25 +15,24 @@ from .models import TranslationMenuItem
 def register_admin_urls():
     urls = [
         path(
-            "translate/pofile/bulk_upload/",
+            "translate/bulk_upload/",
             edit_translation.bulk_upload_pofile,
             name="bulk_upload_pofile",
         ),
         path(
-            "translate/upload_bulk_files/",
+            "translate/bulk_upload_form/",
             edit_translation.BulkUploadView.as_view(),
             name="bulk_upload_files",
         ),
         path(
-            "translate/download_bulk_files/<int:page_id>",
-            edit_translation.BulkDownload.as_view(),
-            name="bulk_download_files",
+            "translate/bulk_download_files/<int:page_id>",
+            edit_translation.bulk_download_pofile,
+            name="bulk_download_pofile",
         ),
-
         path(
-            "translate/download_bulk_files/",
-            edit_translation.BulkDownload.as_view(),
-            name="bulk_download_all_files",
+            "translate/bulk_download_all_files/",
+            edit_translation.bulk_download_all_pofiles,
+            name="bulk_download_all",
         ),
     ]
 
@@ -65,7 +63,7 @@ def menu_item_upload_po_button():
 @hooks.register('register_admin_menu_item')
 def menu_item_download_po_button():
     url = reverse(
-        "bulk_translation_import:bulk_download_all_files",
+        "bulk_translation_import:bulk_download_all",
     )
     return TranslationMenuItem(
         _("Download translations"),
@@ -78,8 +76,8 @@ def menu_item_download_po_button():
 def page_listing_download_po_button(page: Page, user, view_name=None, next_url=None):
     if not page.is_root() and user.has_perm("wagtail_localize.submit_translation"):
         url = reverse(
-            "bulk_translation_import:bulk_download_files",
-            args=[page.alias_of_id or page.id],
+            "bulk_translation_import:bulk_download_pofile",
+            args=[page.id],
         )
         if next_url is not None:
             url += "?" + urlencode({"next": next_url})
