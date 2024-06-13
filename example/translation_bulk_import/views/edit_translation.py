@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
+from django.views import View
 
 from wagtail_localize.models import Translation
 from wagtail.admin.views.pages.utils import get_valid_next_url_from_request
@@ -47,4 +48,7 @@ def bulk_upload_pofile(request):
 
 class BulkUploadView(TemplateView):
     template_name = "translation_bulk_import/admin/bulk_upload.html"
+    title = "Upload many PO files"
+
+class BulkDownload(View):
     title = "Upload many PO files"

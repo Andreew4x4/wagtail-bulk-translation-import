@@ -23,7 +23,7 @@ def register_admin_urls():
         ),
         path(
             "translate/download_bulk_files/<int:page_id>",
-            edit_translation.BulkDownloadView.as_view(),
+            edit_translation.BulkDownload.as_view(),
             name="bulk_download_files",
         ),
     ]
@@ -42,10 +42,7 @@ def register_admin_urls():
 def page_listing_upload_po_button(page: Page, user, view_name=None, next_url=None):
     url = reverse(
         "bulk_translation_import:bulk_upload_files",
-        args=[page.alias_of_id or page.id],
     )
-    if next_url is not None:
-        url += "?" + urlencode({"next": next_url})
     yield ListingButton(
         "Upload many PO files",
         url,
@@ -59,18 +56,19 @@ hooks.register("register_page_listing_more_buttons", page_listing_upload_po_butt
 
 
 def page_listing_download_po_button(page: Page, user, view_name=None, next_url=None):
-    url = reverse(
-        "bulk_translation_import:bulk_download_files",
-        args=[page.alias_of_id or page.id],
-    )
-    if next_url is not None:
-        url += "?" + urlencode({"next": next_url})
-    yield ListingButton(
-        "Dwonload PO files for site",
-        url,
-        priority=60,
-        icon_name="wagtail-localize-language",
-    )
+    if not page.is_root() and user.has_perm("wagtail_localize.submit_translation"):
+        url = reverse(
+            "bulk_translation_import:bulk_download_files",
+            args=[page.alias_of_id or page.id],
+        )
+        if next_url is not None:
+            url += "?" + urlencode({"next": next_url})
+        yield ListingButton(
+            "Dwonload PO files for site",
+            url,
+            priority=60,
+            icon_name="wagtail-localize-language",
+        )
 
 hooks.register("register_page_header_buttons", page_listing_download_po_button)
 hooks.register("register_page_listing_more_buttons", page_listing_download_po_button)
